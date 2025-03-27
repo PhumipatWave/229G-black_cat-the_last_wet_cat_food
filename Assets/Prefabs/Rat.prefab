@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4892973246018283201}
   - component: {fileID: 5116434894916603119}
+  - component: {fileID: 2742040088501867187}
   m_Layer: 0
   m_Name: AtkHitBox
   m_TagString: Untagged
@@ -82,8 +83,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15, y: 5, z: 15}
+  m_Size: {x: 20, y: 5, z: 20}
   m_Center: {x: 0, y: -2.5, z: 0}
+--- !u!114 &2742040088501867187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5835225424412299627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a395fe7bdcd8564da4c9dcc2403bcbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5821531588797308665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -178,9 +191,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4800848008482433827}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1422439099284193377}
   m_SourcePrefab: {fileID: 100100000, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
 --- !u!4 &6287171725566671122 stripped
 Transform:
@@ -217,7 +227,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!95 &2311775907013309899
 Animator:
@@ -257,12 +267,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 1132410135776900820}
+  atkHitBox: {fileID: 5835225424412299627}
   rb: {fileID: 0}
   anim: {fileID: 0}
   speed: 2
   turnSpeed: 1
   jumpPower: 0
+  attackCooldown: 3
   isGround: 0
+  isAttackCooldown: 0
+  isTakeDamage: 0
+  isDead: 0
+  haveRunAnim: 0
+  attatckLenght: 4.25
 --- !u!135 &4800848008482433827
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -284,15 +301,3 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 4.5
   m_Center: {x: 0, y: 3.8, z: 0}
---- !u!114 &1422439099284193377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6632489379387909032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c949ac6d5280ce24493be05bbebe54d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

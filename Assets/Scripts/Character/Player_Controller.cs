@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class Player_Controller : Humanoid
 {
-    public GameObject atkHitBox;
     public SpawnManager spawner;
 
     private InputAction moveAction;
@@ -27,10 +26,13 @@ public class Player_Controller : Humanoid
 
     private void Update()
     {
-        CheckGround();
-        Jump();
-        Movement();
-        Attack();
+        if (!isDead)
+        {
+            CheckGround();
+            Jump();
+            Movement();
+            Attack();
+        }
     }
 
     public override void Movement()
@@ -38,10 +40,11 @@ public class Player_Controller : Humanoid
         float horizontalInput = moveAction.ReadValue<Vector2>().normalized.x;
         float verticalInput = moveAction.ReadValue<Vector2>().normalized.y;
         Vector3 moveDir = new Vector3(horizontalInput * speed, rb.linearVelocity.y, verticalInput * speed);
-        rb.linearVelocity = moveDir;
 
-        if (horizontalInput != 0f || verticalInput != 0f)
+        if (horizontalInput != 0f || verticalInput != 0f && !isTakeDamage)
         {
+            rb.linearVelocity = moveDir;
+
             Vector3 lookDir = new Vector3(horizontalInput, 0f, verticalInput);
             Quaternion targetRotation = Quaternion.LookRotation(lookDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
@@ -68,24 +71,34 @@ public class Player_Controller : Humanoid
 
     public override void Attack()
     {
-        if (attackAction.triggered && isGround)
+        if (attackAction.triggered && !isAttackCooldown && isGround)
         {
             atkHitBox.gameObject.SetActive(true);
             anim.SetTrigger("AttackTrigger");
+            isAttackCooldown = true;
             StartCoroutine(AttackRoutine());
         }
     }
 
-    IEnumerator AttackRoutine()
+    public override IEnumerator AttackRoutine()
     {
         yield return new WaitForSeconds(1f);
         atkHitBox.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(attackCooldown);
+        isAttackCooldown = false;
+    }
+
+    public override void Dead()
+    {
+        
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("EnemyWave"))
         {
+            collision.gameObject.GetComponent<Collider>().enabled = false;
             spawner = collision.gameObject.GetComponent<SpawnManager>();
             spawner.Initialize();
         }

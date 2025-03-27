@@ -6,15 +6,31 @@ public class SpawnManager : MonoBehaviour
     public Wave currentWave;
     public Wave[] waves;
     public Transform[] spawnPoint;
+    public Transform bossSpawnPoint;
     public GameObject enemyPrefab;
+    public GameObject bossPrefab;
+    public GameObject wall;
     public int enemyInWave;
     public bool[] isActivated;
 
     private int waveCount;
     private int enemySpawned;
 
+    private void Start()
+    {
+        if (wall != null)
+        {
+            wall.gameObject.SetActive(false);
+        }
+    }
+
     public void Initialize()
     {
+        if (wall != null)
+        {
+            wall.gameObject.SetActive(true);
+        }
+
         waveCount = -1;
         StartCoroutine(SpawnRoutine());
     }
@@ -58,6 +74,16 @@ public class SpawnManager : MonoBehaviour
         }
         else
         {
+            if (bossPrefab != null)
+            {
+                Instantiate(bossPrefab, bossSpawnPoint.position, Quaternion.identity);
+            }
+
+            if (wall != null)
+            {
+                wall.gameObject.SetActive(false);
+            }
+
             Debug.Log($"End all the {waveCount + 1} waves");
             yield break;
         }

@@ -1,10 +1,10 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackHitBox : MonoBehaviour
 {
-    public Player_Controller player;
-
+    private GameObject targetObj;
     private bool isPlayerParrent;
     private bool isEnemyParrent;
 
@@ -29,22 +29,47 @@ public class AttackHitBox : MonoBehaviour
         {
             if (other.CompareTag("Enemy"))
             {
-                Destroy(other.GetComponent<Enemy>());
-                other.GetComponent<Rigidbody>().freezeRotation = false;
-                other.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+                targetObj = (GameObject)other.gameObject;
+                targetObj.GetComponent<Rigidbody>().freezeRotation = false;
+                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
 
-                player.spawner.enemyInWave--;
+                targetObj.GetComponentInParent<Enemy>().isDead = true;
+                targetObj.GetComponentInParent<Enemy>().Dead();
+            }
 
-                Debug.Log($"Kick Enemy, Enemy remain : {player.spawner.enemyInWave}");
+            if (other.CompareTag("Boss"))
+            {
+                targetObj = (GameObject)other.gameObject;
+                targetObj.GetComponent<Rigidbody>().freezeRotation = false;
+                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+
+                Debug.Log("Call Freeze Rotate");
+                StartCoroutine(ForcePushRoutine(0.5f));
             }
         }
         else if (isEnemyParrent)
         {
             if (other.CompareTag("Player"))
             {
-                other.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
-                Debug.Log("Kick Player");
+                targetObj = (GameObject)other.gameObject;
+                targetObj.GetComponent<Player_Controller>().isTakeDamage = true;
+                targetObj.GetComponent<Rigidbody>().freezeRotation = false;
+                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+
+                Debug.Log("Call Freeze Rotate");
+                StartCoroutine(ForcePushRoutine(0.5f));
+
+                Debug.Log($"Kick Player");
             }
         }
+    }
+
+    IEnumerator ForcePushRoutine(float cooldownTime)
+    {
+        Debug.Log("Disable Freeze Rotate");
+        yield return new WaitForSeconds(cooldownTime);
+        targetObj.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        targetObj.GetComponent<Player_Controller>().isTakeDamage = false;
+        Debug.Log("Enable Freeze Rotate");
     }
 }
