@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeartUI : MonoBehaviour
+public class HeartInterface : MonoBehaviour
 {
     public Image[] hearts; // เปลี่ยนชื่อจาก heart เป็น hearts
     public Sprite redHeart;
@@ -16,11 +16,19 @@ public class HeartUI : MonoBehaviour
         if (healthManager != null)
         {
             healthManager.OnHeartChanged += UpdateGameplayUI;
-            UpdateGameplayUI(healthManager.health);
+            UpdateGameplayUI(healthManager.heart);
         }
         else
         {
             Debug.LogError("HPManager not found in the scene!");
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            healthManager.TakeDamage(1);
         }
     }
 
