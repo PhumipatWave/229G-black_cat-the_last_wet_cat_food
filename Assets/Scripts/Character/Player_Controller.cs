@@ -10,6 +10,7 @@ public class Player_Controller : Humanoid
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction attackAction;
+    private bool isWin;
 
     public void Start()
     {
