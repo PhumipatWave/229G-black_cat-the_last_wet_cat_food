@@ -6,11 +6,12 @@ using UnityEngine.InputSystem;
 public class Player_Controller : Humanoid
 {
     public SpawnManager spawner;
+    public GameObject winMenu;
+    public GameObject loseMenu;
 
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction attackAction;
-    private bool isWin;
 
     public void Start()
     {
@@ -33,6 +34,10 @@ public class Player_Controller : Humanoid
             Jump();
             Movement();
             Attack();
+        }
+        else
+        {
+            Dead();
         }
     }
 
@@ -92,7 +97,7 @@ public class Player_Controller : Humanoid
 
     public override void Dead()
     {
-        
+        loseMenu.SetActive(true);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -102,6 +107,11 @@ public class Player_Controller : Humanoid
             collision.gameObject.GetComponent<Collider>().enabled = false;
             spawner = collision.gameObject.GetComponent<SpawnManager>();
             spawner.Initialize();
+        }
+        else if (collision.gameObject.CompareTag("Finish"))
+        {
+            anim.SetBool("IsWin", true);
+            winMenu.SetActive(true);
         }
     }
 }

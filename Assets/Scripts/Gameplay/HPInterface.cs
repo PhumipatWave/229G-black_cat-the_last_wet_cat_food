@@ -24,14 +24,6 @@ public class HeartInterface : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            healthManager.TakeDamage(1);
-        }
-    }
-
     void UpdateGameplayUI(int currentHeart)
     {
         for (int i = 0; i < hearts.Length; i++) // เปลี่ยนเป็น hearts

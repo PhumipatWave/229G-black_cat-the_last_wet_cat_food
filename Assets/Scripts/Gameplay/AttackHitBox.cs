@@ -43,6 +43,8 @@ public class AttackHitBox : MonoBehaviour
                 targetObj.GetComponent<Rigidbody>().freezeRotation = false;
                 targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
 
+                targetObj.GetComponent<Boss>().hitCount++;
+
                 Debug.Log("Call Freeze Rotate");
                 StartCoroutine(ForcePushRoutine(0.5f));
             }
@@ -56,8 +58,11 @@ public class AttackHitBox : MonoBehaviour
                 targetObj.GetComponent<Rigidbody>().freezeRotation = false;
                 targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
 
+                targetObj.GetComponent<HPManager>().TakeDamage(1);
+
                 Debug.Log("Call Freeze Rotate");
                 StartCoroutine(ForcePushRoutine(0.5f));
+
 
                 Debug.Log($"Kick Player");
             }
