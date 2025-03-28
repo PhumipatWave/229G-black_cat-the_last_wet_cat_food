@@ -9,6 +9,8 @@ public class Player_Controller : Humanoid
     public AudioClip catKick;
     public AudioClip jump;
     public AudioClip catDeath;
+    public AudioClip win;
+    public AudioClip lose;
     public SpawnManager spawner;
     public GameObject winMenu;
     public GameObject loseMenu;
@@ -38,6 +40,12 @@ public class Player_Controller : Humanoid
             Jump();
             Movement();
             Attack();
+
+            if (transform.position.y < -30f)
+            {
+                Dead();
+                isDead = true;
+            }
         }
         else
         {
@@ -105,6 +113,7 @@ public class Player_Controller : Humanoid
     {
         loseMenu.SetActive(true);
         PlayOnceSound(catDeath);
+        PlayOnceSound(lose);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -119,6 +128,7 @@ public class Player_Controller : Humanoid
         {
             anim.SetBool("IsWin", true);
             winMenu.SetActive(true);
+            PlayOnceSound(win);
         }
     }
 }
