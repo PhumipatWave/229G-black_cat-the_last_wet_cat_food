@@ -5,6 +5,11 @@ using UnityEngine.InputSystem;
 
 public class Player_Controller : Humanoid
 {
+    public AudioSource audioSource;
+    public AudioClip catWalk;
+    public AudioClip catKick;
+    public AudioClip jump;
+    public AudioClip catDeath;
     public SpawnManager spawner;
     public GameObject winMenu;
     public GameObject loseMenu;
@@ -55,6 +60,7 @@ public class Player_Controller : Humanoid
             Quaternion targetRotation = Quaternion.LookRotation(lookDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
+            audioSource.PlayOneShot(catWalk);
             Debug.Log($"Movement directrion : {lookDir}");
             anim.SetFloat("MoveInput", 1);
         }
@@ -72,6 +78,7 @@ public class Player_Controller : Humanoid
             Vector3 jumpDir = new Vector3(0f, jumpPower, 0f);
             rb.linearVelocity = jumpDir;
             anim.SetTrigger("JumpTrigger");
+            audioSource.PlayOneShot(jump);
         }
     }
 
@@ -83,6 +90,7 @@ public class Player_Controller : Humanoid
             anim.SetTrigger("AttackTrigger");
             isAttackCooldown = true;
             StartCoroutine(AttackRoutine());
+            audioSource.PlayOneShot(catKick);
         }
     }
 
@@ -98,6 +106,7 @@ public class Player_Controller : Humanoid
     public override void Dead()
     {
         loseMenu.SetActive(true);
+        audioSource.PlayOneShot(catDeath);
     }
 
     private void OnCollisionEnter(Collision collision)
