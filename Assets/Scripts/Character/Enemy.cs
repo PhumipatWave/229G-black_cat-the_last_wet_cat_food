@@ -3,6 +3,18 @@ using UnityEngine;
 
 public class Enemy : Humanoid
 {
+    public AudioClip ratWalk;
+    public AudioClip ratHit;
+    public AudioClip ratDie;
+
+    public AudioClip catWalk;
+    public AudioClip catKick;
+    public AudioClip catDeath;
+
+    public AudioClip currentWalk;
+    public AudioClip currentAttack;
+    public AudioClip currentDeath;
+
     public bool haveRunAnim;
     public float attatckLenght;
 
@@ -14,6 +26,19 @@ public class Enemy : Humanoid
         Debug.Log($"{nameof(gameObject)} Start");
 
         player = FindAnyObjectByType<Player_Controller>();
+
+        if (gameObject.tag == "Enemy")
+        {
+            currentWalk = ratWalk;
+            currentAttack = ratHit;
+            currentDeath = ratDie;
+        }
+        else if (gameObject.tag == "Boss")
+        {
+            currentWalk = catWalk;
+            currentAttack = catKick;
+            currentDeath = catDeath;
+        }
 
         atkHitBox.gameObject.SetActive(false);
     }
@@ -43,6 +68,8 @@ public class Enemy : Humanoid
             Vector3 lookDir = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
             transform.LookAt(lookDir);
 
+            PlayOnceSound(currentWalk);
+
             if (haveRunAnim)
             {
                 anim.SetFloat("MoveSpeed", 1);
@@ -62,6 +89,7 @@ public class Enemy : Humanoid
             anim.SetTrigger("AttackTrigger");
             isAttackCooldown = true;
             StartCoroutine(AttackRoutine());
+            PlayOnceSound(currentAttack);
         }
     }
 
@@ -78,6 +106,7 @@ public class Enemy : Humanoid
     {
         player.spawner.enemyInWave--;
         Destroy(this.gameObject, 5f);
+        PlayOnceSound(currentDeath);
         Debug.Log($"Kick Enemy, Enemy remain : {player.spawner.enemyInWave}");
     }
 }

@@ -8,6 +8,7 @@ public abstract class Humanoid : MonoBehaviour
     public GameObject atkHitBox;
     public Rigidbody rb;
     public Animator anim;
+    public AudioSource audioSource;
 
     public float speed;
     public float turnSpeed;
@@ -22,6 +23,7 @@ public abstract class Humanoid : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         Debug.Log("Humanoid Initialized!");
     }
@@ -29,6 +31,12 @@ public abstract class Humanoid : MonoBehaviour
     public abstract void Movement();
     public abstract void Attack();
     public abstract void Dead();
+
+    public virtual void PlayOnceSound(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
 
     public void CheckGround()
     {
