@@ -7,6 +7,7 @@ public class AttackHitBox : MonoBehaviour
     private GameObject targetObj;
     private bool isPlayerParrent;
     private bool isEnemyParrent;
+    private float force, mass, acc;
 
     private void Start()
     {
@@ -23,6 +24,18 @@ public class AttackHitBox : MonoBehaviour
         }
     }
 
+    private void PlayerForceSetting()
+    {
+        targetObj.GetComponent<Rigidbody>().freezeRotation = false;
+
+        mass = targetObj.GetComponent<Rigidbody>().mass;
+        acc = targetObj.GetComponent<Enemy>().speed;
+        force = mass * acc;
+
+        targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+        Debug.Log($"Player - Enemy/Boss : F action = {force}");
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (isPlayerParrent)
@@ -30,8 +43,11 @@ public class AttackHitBox : MonoBehaviour
             if (other.CompareTag("Enemy"))
             {
                 targetObj = (GameObject)other.gameObject;
-                targetObj.GetComponent<Rigidbody>().freezeRotation = false;
-                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+                PlayerForceSetting();
+
+                Player_Controller p = gameObject.GetComponentInParent<Player_Controller>();
+                p.GetComponent<Rigidbody>().AddForce(-transform.forward * force, ForceMode.Impulse);
+                Debug.Log($"Player - Enemy : F reaction = {force}");
 
                 targetObj.GetComponentInParent<Enemy>().isDead = true;
                 targetObj.GetComponentInParent<Enemy>().Dead();
@@ -40,8 +56,11 @@ public class AttackHitBox : MonoBehaviour
             if (other.CompareTag("Boss"))
             {
                 targetObj = (GameObject)other.gameObject;
-                targetObj.GetComponent<Rigidbody>().freezeRotation = false;
-                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+                PlayerForceSetting();
+
+                Player_Controller p = gameObject.GetComponentInParent<Player_Controller>();
+                p.GetComponent<Rigidbody>().AddForce(-transform.forward * force, ForceMode.Impulse);
+                Debug.Log($"Player - Boss : F reaction = {force}");
 
                 targetObj.GetComponent<Boss>().hitCount++;
 
@@ -56,7 +75,26 @@ public class AttackHitBox : MonoBehaviour
                 targetObj = (GameObject)other.gameObject;
                 targetObj.GetComponent<Player_Controller>().isTakeDamage = true;
                 targetObj.GetComponent<Rigidbody>().freezeRotation = false;
-                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+
+                mass = targetObj.GetComponent<Rigidbody>().mass;
+                acc = targetObj.GetComponent<Player_Controller>().speed;
+                force = mass * acc;
+
+                targetObj.GetComponent<Rigidbody>().AddForce(transform.forward * force, ForceMode.Impulse);
+                Debug.Log($"Enemy/Boss - PLayer : F action = {force}");
+
+                Enemy e = gameObject.GetComponentInParent<Enemy>();
+
+                if (e.CompareTag("Enemy"))
+                {
+                    e.GetComponent<Rigidbody>().AddForce(-transform.forward * force, ForceMode.Impulse);
+                    Debug.Log($"Enemy - PLayer : F reaction = {force}");
+                }
+                else if (e.CompareTag("Boss"))
+                {
+                    e.GetComponent<Rigidbody>().AddForce(-transform.forward * force, ForceMode.Impulse);
+                    Debug.Log($"Boss - PLayer : F reaction = {force}");
+                }
 
                 targetObj.GetComponent<HPManager>().TakeDamage(1);
 
@@ -67,6 +105,8 @@ public class AttackHitBox : MonoBehaviour
                 Debug.Log($"Kick Player");
             }
         }
+
+        Debug.Log(force);
     }
 
     IEnumerator ForcePushRoutine(float cooldownTime)

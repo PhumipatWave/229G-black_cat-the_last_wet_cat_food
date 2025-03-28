@@ -119,15 +119,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.01
+      value: -9.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -66.5076
+      value: -50.49
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3889227382c4fae4190cacc3ef955687, type: 3}
       propertyPath: m_LocalRotation.w
@@ -213,7 +213,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6632489379387909032}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -292,7 +292,7 @@ MonoBehaviour:
   currentAttack: {fileID: 0}
   currentDeath: {fileID: 0}
   haveRunAnim: 0
-  attatckLenght: 4.25
+  attatckLenght: 2
 --- !u!135 &4800848008482433827
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -300,7 +300,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6632489379387909032}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e042e7c718f32fe4cb15b2b835d6b99c, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

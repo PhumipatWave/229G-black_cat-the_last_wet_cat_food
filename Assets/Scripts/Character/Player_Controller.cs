@@ -82,7 +82,7 @@ public class Player_Controller : Humanoid
         {
             Debug.Log("Jump");
             Vector3 jumpDir = new Vector3(0f, jumpPower, 0f);
-            rb.linearVelocity = jumpDir;
+            rb.AddForce(jumpDir, ForceMode.Impulse);
             anim.SetTrigger("JumpTrigger");
             PlayOnceSound(jump);
         }
