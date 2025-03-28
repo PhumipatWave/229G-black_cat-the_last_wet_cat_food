@@ -7488,6 +7488,10 @@ PrefabInstance:
       propertyPath: loseMenu
       value: 
       objectReference: {fileID: 1879181553}
+    - target: {fileID: 7316987047548035963, guid: 15cd294b2cad56548b1db7518ba38ff9, type: 3}
+      propertyPath: jumpPower
+      value: 35
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
